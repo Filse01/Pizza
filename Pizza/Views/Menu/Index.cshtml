@@ -1,0 +1,71 @@
+@using MenuPageViewModel = Pizza.ViewModels.MenuPageViewModel
+@model MenuPageViewModel
+@{
+    ViewData["Title"] = "Menu";
+}
+@section Sidebar {
+    <partial name="_FilterViewPartial" model="Model.Ingredients"/>
+}
+<div class="container-fluid">
+    <div class="row justify-content-evenly gap-2 h-100 mt-3">
+        @foreach (var pizza in Model.Pizzas)
+        {
+            <div class="card col-12" style="width: 18rem;">
+                <img src="@pizza.ImageUrl" class="card-img-top h-50 mt-2" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">@pizza.Name</h5>
+                    
+                    <p class="card-text">@string.Join(", ", pizza.Ingredients.Select(i => i.Ingredient.Name))</p>
+                    <a href="#" class="btn btn-primary">Add To Cart</a>
+                </div>
+            </div>
+        }
+
+    </div>
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const ingredientCheckboxes = document.querySelectorAll(".ingredient-filter");
+    const pizzaContainer = document.querySelector(".row.justify-content-evenly");
+
+    function loadFilteredPizzas() {
+        // Collect selected ingredient IDs
+        const selectedIngredients = Array.from(ingredientCheckboxes)
+            .filter(cb => cb.checked)
+            .map(cb => cb.value);
+
+        // Collect special filters
+      
+        // Build query string
+        const params = new URLSearchParams();
+        selectedIngredients.forEach(id => params.append("ingredients", id));
+       
+        fetch(`/Menu/FilterPizzas?${params.toString()}`)
+            .then(response => response.text())
+            .then(html => {
+                pizzaContainer.innerHTML = html;
+            });
+    }
+
+    // Attach event listeners
+    ingredientCheckboxes.forEach(cb => cb.addEventListener("change", loadFilteredPizzas));
+   
+});
+</script>
+<style>
+    body {
+        /* fallback */
+        background: #2c2c2c url("images/6464325.jpg") no-repeat fixed center;
+    }
+    .card {
+        background-color: #fff;
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 25px rgba(0,0,0,0.3);
+    }
+</style>

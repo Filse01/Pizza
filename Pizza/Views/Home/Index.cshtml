@@ -1,0 +1,84 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<section class="hero">
+    <div class="hero__overlay"></div>
+    <div class="hero__content">
+        <h1 class="hero__title">Viverre Pizza</h1>
+        <p class="hero__subtitle">Wood-fired • Fresh dough • Real mozzarella</p>
+        <div class="hero__actions">
+            <a class="btn btn--primary" asp-controller="Menu" asp-action="Index">Order Now</a>
+            <a class="btn btn--ghost" asp-controller="Menu" asp-action="Index">See Menu</a>
+        </div>
+    </div>
+</section>
+<style>
+  @@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
+    .hero{
+  position: relative;
+  width: 100%;
+  min-height: 100svh;            /* mobile-friendly viewport */
+  background-image: url('images/zoom-party-pizza-slice-on-wood-v9b7xqgls5fw0n28.jpg');
+  background-size: cover;
+  background-position: center;
+  display: grid;
+  place-items: center;
+  isolation: isolate;            /* for overlay stacking */
+}
+
+.hero__overlay{
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,.55), rgba(0,0,0,.35));
+  z-index: -1;
+}
+
+.hero__content{
+  text-align: center;
+  padding: 2rem;
+}
+
+.hero__title{
+  font-family: 'Great Vibes', cursive;
+  font-size: clamp(3rem, 10vw, 9rem);
+  line-height: 1;
+  color: #fff;
+  text-shadow: 0 2px 12px rgba(0,0,0,.5);
+  margin: 0 0 .5rem 0;
+}
+
+.hero__subtitle{
+  color: #f3f3f3;
+  font-size: clamp(1rem, 2.5vw, 1.5rem);
+  margin-bottom: 1.25rem;
+}
+
+.btn{
+  display: inline-block;
+  padding: .9rem 1.25rem;
+  border-radius: 999px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform .12s ease, box-shadow .12s ease, background-color .2s ease, color .2s ease;
+  margin: .25rem .4rem;
+}
+
+.btn--primary{
+  background: #e63946;
+  color: #fff;
+  box-shadow: 0 6px 20px rgba(230,57,70,.35);
+}
+
+.btn--primary:hover{ transform: translateY(-1px); }
+
+.btn--ghost{
+  background: transparent;
+  color: #fff;
+  outline: 2px solid rgba(255,255,255,.8);
+}
+
+.btn--ghost:hover{
+  background: rgba(255,255,255,.12);
+}
+</style>

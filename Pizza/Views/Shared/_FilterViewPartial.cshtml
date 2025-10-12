@@ -1,0 +1,48 @@
+@using IngredientsViewModel = Pizza.ViewModels.IngredientsViewModel
+@model IEnumerable<IngredientsViewModel>
+@{
+    Layout = null;
+}
+<aside class="col-md-2">
+    <div class="p-3">
+        <a class="btn btn-primary " data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="true" aria-controls="collapseExample">Filters</a>
+        <hr>
+        <div class="d-block d-lg-none">
+            <div class="collapse" id="collapseExample">
+                @foreach (var ing in Model)
+                {
+                    <div class="form-check" >
+                        <input class="form-check-input ingredient-filter" 
+                               type="checkbox" 
+                               value="@ing.Id" 
+                               id="ing-@ing.Id">
+                        <label class="form-check-label" for="ing-@ing.Id">
+                            @ing.Name
+                        </label>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="d-none d-lg-block">
+            <div class="collapse show" id="collapseExample">
+                @foreach (var ing in Model)
+                {
+                    <div class="form-check" >
+                        <input class="form-check-input ingredient-filter" 
+                               type="checkbox" 
+                               value="@ing.Id" 
+                               id="ing-@ing.Id">
+                        <label class="form-check-label" for="ing-@ing.Id">
+                            @ing.Name
+                        </label>
+                    </div>
+                }
+        </div>
+        </div>
+    </div>
+</aside>
+<style>
+    label{
+        color:white;
+    }
+</style>

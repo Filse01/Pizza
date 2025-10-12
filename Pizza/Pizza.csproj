@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <UserSecretsId>aspnet-Pizza-66f66bf1-a26a-4c01-9882-6a1174cd181f</UserSecretsId>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.19"/>
+        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.19"/>
+        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.19"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.20" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.19"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="wwwroot\images\pizza-4952508_1280.jpg" />
+    </ItemGroup>
+
+</Project>
