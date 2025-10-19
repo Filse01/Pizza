@@ -14,6 +14,8 @@ builder.Services.AddDbContext<PizzaDbContext>(options =>
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddDefaultUI()
+    .AddDefaultTokenProviders()
     .AddEntityFrameworkStores<PizzaDbContext>();
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IPizzaService,  PizzaService>();
