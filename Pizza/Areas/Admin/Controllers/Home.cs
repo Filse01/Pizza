@@ -1,10 +1,11 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Pizza.Areas.Admin.Controllers;
 [Area("Admin")]
 public class Home : Controller
 {
-    
+    [Authorize(Roles = "Admin")]
     public IActionResult Index()
     {
         return View();
