@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace Pizza.Controllers;
-
-public class AdminController : Controller
+namespace Pizza.Areas.Admin.Controllers;
+[Area("Admin")]
+public class Home : Controller
 {
-    // GET
+    
     public IActionResult Index()
     {
         return View();

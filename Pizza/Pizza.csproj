@@ -20,4 +20,13 @@
       <None Include="wwwroot\images\pizza-4952508_1280.jpg" />
     </ItemGroup>
 
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Views\Admin\Index.cshtml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Areas\Admin\Data\" />
+      <Folder Include="Areas\Admin\Models\" />
+    </ItemGroup>
+
 </Project>
