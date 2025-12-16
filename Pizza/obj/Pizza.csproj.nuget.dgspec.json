@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/filse/RiderProjects/Pizza/Pizza/Pizza.csproj": {}
+    "/home/filse/Documents/Pizza/Pizza/Pizza.csproj": {}
   },
   "projects": {
-    "/home/filse/RiderProjects/Pizza/Pizza/Pizza.csproj": {
+    "/home/filse/Documents/Pizza/Pizza/Pizza.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/filse/RiderProjects/Pizza/Pizza/Pizza.csproj",
+        "projectUniqueName": "/home/filse/Documents/Pizza/Pizza/Pizza.csproj",
         "projectName": "Pizza",
-        "projectPath": "/home/filse/RiderProjects/Pizza/Pizza/Pizza.csproj",
+        "projectPath": "/home/filse/Documents/Pizza/Pizza/Pizza.csproj",
         "packagesPath": "/home/filse/.nuget/packages/",
-        "outputPath": "/home/filse/RiderProjects/Pizza/Pizza/obj/",
+        "outputPath": "/home/filse/Documents/Pizza/Pizza/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/filse/.nuget/NuGet/NuGet.Config"
@@ -87,7 +87,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/home/filse/.dotnet/sdk/8.0.413/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/home/filse/.dotnet/sdk/8.0.416/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

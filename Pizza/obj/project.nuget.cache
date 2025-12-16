@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "H7/DSrzSv7Y=",
+  "dgSpecHash": "hNyToXpxx6s=",
   "success": true,
-  "projectFilePath": "/home/filse/RiderProjects/Pizza/Pizza/Pizza.csproj",
+  "projectFilePath": "/home/filse/Documents/Pizza/Pizza/Pizza.csproj",
   "expectedPackageFiles": [
     "/home/filse/.nuget/packages/azure.core/1.38.0/azure.core.1.38.0.nupkg.sha512",
     "/home/filse/.nuget/packages/azure.identity/1.11.4/azure.identity.1.11.4.nupkg.sha512",

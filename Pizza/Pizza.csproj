@@ -29,4 +29,11 @@
       <Folder Include="Areas\Admin\Models\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Content Update="Areas\Identity\Pages\Account\images\zoom-party-pizza-slice-on-wood-v9b7xqgls5fw0n28.jpg">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </Content>
+    </ItemGroup>
+
 </Project>
