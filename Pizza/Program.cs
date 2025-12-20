@@ -19,6 +19,7 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => options.Sign
     .AddEntityFrameworkStores<PizzaDbContext>();
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IPizzaService,  PizzaService>();
+builder.Services.AddScoped<IAdminService,  AdminService>();
 builder.Services.AddRazorPages();
 var app = builder.Build();
 

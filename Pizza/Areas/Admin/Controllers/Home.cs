@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Pizza.Areas.Admin.Controllers;
 [Area("Admin")]
-public class Home : Controller
+public class HomeController : Controller
 {
     [Authorize(Roles = "Admin")]
     public IActionResult Index()

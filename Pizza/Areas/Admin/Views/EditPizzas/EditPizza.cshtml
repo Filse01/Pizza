@@ -1,0 +1,32 @@
+@using EditPizzaViewModel = Pizza.ViewModels.EditPizzaViewModel
+@using EditPageViewModel = Pizza.ViewModels.EditPageViewModel
+@model EditPageViewModel
+<form asp-controller="EditPizzas" asp-action="EditPizza">
+    <div class="container">
+        <div>
+            <label asp-for="Pizza.Name" class="form-label">Pizza Name</label>
+            <input asp-for="Pizza.Name" class="form-control" placeholder="Enter Pizza Name" />
+        </div>
+        <div>
+            <label asp-for="Pizza.Price" class="form-label">Pizza Price</label>
+            <input asp-for="Pizza.Price" class="form-control" type="number" placeholder="Enter Pizza Price" />
+        </div>
+        <div>
+            <label asp-for="Pizza.ImageUrl" class="form-label">Pizza Image</label>
+            <input asp-for="Pizza.ImageUrl" class="form-control" placeholder="Enter Pizza Image" />
+        </div>
+        <div>
+            <label asp-for="Pizza.Description" class="form-label">Pizza Description</label>
+            <input asp-for="Pizza.Description" class="form-control" placeholder="Enter Pizza Description" />
+        </div>
+        <div>
+            <label>Ingredients</label>
+            <br>
+            <input type="search">
+            <div>
+                @string.Join(", ", Model.Pizza.Ingredients.Select(i => i.Ingredient.Name))
+            </div>
+        </div>
+        
+    </div>
+</form>

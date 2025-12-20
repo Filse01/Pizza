@@ -26,6 +26,14 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = /home/filse/Documents/Pizza/Pizza
 build_property._RazorSourceGeneratorDebug = 
 
+[/home/filse/Documents/Pizza/Pizza/Areas/Admin/Views/EditPizzas/EditPizza.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvRWRpdFBpenphcy9FZGl0UGl6emEuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/filse/Documents/Pizza/Pizza/Areas/Admin/Views/EditPizzas/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvRWRpdFBpenphcy9JbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [/home/filse/Documents/Pizza/Pizza/Areas/Admin/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvSG9tZS9JbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 

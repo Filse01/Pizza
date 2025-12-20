@@ -7,14 +7,14 @@
 <div class="container mt-5 justify-content-center">
     <h1 class="text-center mb-5">Admin Panel</h1>
     <div class="row justify-content-center gap-4">
-        <button class="col-3 border-0 rounded-2 p-3 fs-3">
+        <a asp-controller="AdminController" asp-action="EditIngredientsIndex" class="col-3 border-0 rounded-2 p-3 fs-3 btn-dark text-center">
             Edit Ingredients
-        </button >
-        <button class=" col-3 border-0 rounded-2 p-3 fs-3">
+        </a >
+        <a asp-area="Admin" asp-controller="EditPizzas" asp-action="Index" class="col-3 border-0 rounded-2 p-3 fs-3 btn-dark text-center">
             Edit Pizzas
-        </button>
-        <button class="col-3 border-0 rounded-2 p-3 fs-3">
+        </a>
+        <a asp-controller="AdminController" asp-action="ViewOrdersIndex" class="col-3 border-0 rounded-2 p-3 fs-3 btn-dark text-center">
             View Orders
-        </button>
+        </a>
     </div>
 </div>
