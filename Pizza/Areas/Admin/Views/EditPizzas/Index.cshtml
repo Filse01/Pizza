@@ -1,3 +1,5 @@
+@*
+MINE
 @using EditPizzasViewModel = Pizza.ViewModels.EditPizzasViewModel
 @model EditPizzasViewModel
 @if (TempData["SuccessMessage"] != null)
@@ -42,4 +44,163 @@
         }
         </tbody>
     </table>
+</div>
+*@
+@using EditPizzasViewModel = Pizza.ViewModels.EditPizzasViewModel
+@model EditPizzasViewModel
+
+<style>
+    /* Custom Table Styling */
+    .table-custom {
+        border-radius: 1rem;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        background-color: white;
+    }
+
+    .table-custom thead {
+        background-color: #343a40; /* Dark header */
+        color: white;
+    }
+
+    .table-custom th {
+        font-weight: 500;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        letter-spacing: 0.05em;
+        border: none;
+        padding: 1rem;
+    }
+
+    .table-custom td {
+        vertical-align: middle;
+        padding: 1rem;
+        border-bottom: 1px solid #f1f1f1;
+    }
+
+    .table-custom tbody tr {
+        transition: background-color 0.2s;
+    }
+
+    .table-custom tbody tr:hover {
+        background-color: #f8f9fa; /* Light grey on hover */
+    }
+
+    /* Ingredient Badges */
+    .badge-ingredient {
+        background-color: #e9ecef;
+        color: #495057;
+        font-weight: 500;
+        font-size: 0.8rem;
+        padding: 0.35em 0.65em;
+        border-radius: 50rem;
+        margin-right: 4px;
+        margin-bottom: 4px;
+        display: inline-block;
+    }
+    
+    /* Price Styling */
+    .price-tag {
+        font-weight: bold;
+        color: #198754; /* Success green */
+        font-size: 1.1rem;
+    }
+
+    /* Action Buttons Area */
+    .action-group {
+        display: flex;
+        gap: 0.5rem;
+    }
+</style>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show m-4 shadow-sm" role="alert">
+        <i class="fas fa-check-circle me-2"></i> @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<div class="container py-5">
+    
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="mb-1 fw-bold text-dark">Manage Pizzas</h2>
+            <p class="text-muted mb-0">View, edit, or delete items from the menu.</p>
+        </div>
+        <a href="@Url.Action("CreatePizza", "EditPizzas")" class="btn btn-dark shadow-sm px-4">
+            <i class="fas fa-plus me-2"></i>New Pizza
+        </a>
+    </div>
+
+    @if (!Model.Pizzas.Any())
+    {
+        <div class="text-center py-5 bg-light rounded-3">
+            <div class="mb-3 text-muted" style="font-size: 3rem;">
+                <i class="fas fa-pizza-slice"></i>
+            </div>
+            <h4>No Pizzas Found</h4>
+            <p class="text-muted">It looks like your menu is empty.</p>
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-custom">
+                <thead>
+                    <tr>
+                        <th scope="col" style="width: 25%;">Pizza Name</th>
+                        <th scope="col" style="width: 40%;">Ingredients</th>
+                        <th scope="col" style="width: 15%;">Price</th>
+                        <th scope="col" style="width: 20%; text-align: right;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var pizza in Model.Pizzas)
+                    {
+                        <tr>
+                            <td class="fw-bold text-dark">
+                                @pizza.Name
+                            </td>
+                            
+                            <td>
+                                @if (pizza.Ingredients != null && pizza.Ingredients.Any())
+                                {
+                                    @foreach (var ing in pizza.Ingredients)
+                                    {
+                                        <span class="badge-ingredient">@ing.Ingredient.Name</span>
+                                    }
+                                }
+                                else
+                                {
+                                    <span class="text-muted small fst-italic">No ingredients listed</span>
+                                }
+                            </td>
+                            
+                            <td>
+                                <span class="price-tag">$@pizza.Price.ToString("F2")</span>
+                            </td>
+                            
+                            <td>
+                                <div class="action-group justify-content-end">
+                                    <a href="@Url.Action("EditPizza", "EditPizzas", new { id = pizza.Id })" 
+                                       class="btn btn-outline-primary btn-sm" 
+                                       title="Edit Pizza">
+                                        <i class="fas fa-pen"></i> <span class="d-none d-md-inline">Edit</span>
+                                    </a>
+                                
+                                    <a asp-controller="EditPizzas" asp-action="DeletePizza" asp-route-id="@pizza.Id" 
+                                       class="btn btn-outline-danger btn-sm" 
+                                       onclick="return confirm('Are you sure you want to delete @pizza.Name?');"
+                                       title="Delete Pizza">
+                                        <i class="fas fa-trash"></i> <span class="d-none d-md-inline">Delete</span>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
 </div>
