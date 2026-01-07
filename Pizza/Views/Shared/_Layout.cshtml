@@ -6,6 +6,9 @@
     <title>@ViewData["Title"] - Pizza</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+          integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <link rel="stylesheet" href="~/Pizza.styles.css" asp-append-version="true"/>
 </head>
 <body>
@@ -20,21 +23,30 @@
 
             <div id="mainNav" class="collapse navbar-collapse justify-content-between">
                 <!-- Center the menu -->
-                
+
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link text-white fs-4" asp-area="" asp-controller="Home" asp-action="Index">Viverre</a>
+                        <a class="nav-link text-white fs-4" asp-area="" asp-controller="Home"
+                           asp-action="Index">Viverre</a>
 
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white fs-4" asp-area="" asp-controller="Menu" asp-action="Index">Menu</a>
+                        <a class="nav-link text-white fs-4" asp-area="" asp-controller="Menu"
+                           asp-action="Index">Menu</a>
                     </li>
 
                 </ul>
+                
 
                 <!-- Right side (login/user) -->
-                <div class="d-flex">
-                    <partial name="_LoginPartial" />
+                <div class="d-flex align-content-center">
+                    <div class="navbar-nav">
+                        <li class="nav-item pt-2">
+                            <a class="nav-link text-white fs-4"><i class="fa-solid fa-cart-shopping"></i></a>
+                        </li>
+                    </div>
+                   
+                    <partial name="_LoginPartial"/>
                 </div>
             </div>
         </div>
@@ -57,11 +69,21 @@
         </p>
     </div>
     <style>
-        footer p{
+        footer p {
             color: white;
         }
-        footer a{
+
+        footer a {
             color: white;
+        }
+        .btn {
+            display: inline-block;
+            padding: .9rem 1.25rem;      /* This fixes the padding */
+            border-radius: 999px;
+            font-weight: 600;            /* This fixes the boldness */
+            text-decoration: none;
+            transition: transform .12s ease, box-shadow .12s ease, background-color .2s ease, color .2s ease;
+            margin: .25rem .4rem;        /* This fixes the margins */
         }
     </style>
 </footer>

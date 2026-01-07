@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Pizza.Data;
+using Pizza.Models;
 using Pizza.Services.Contracts;
 using Pizza.ViewModels;
 
@@ -66,11 +67,59 @@ public class AdminService : IAdminService
                     Price = pizza.Price,
                     Ingredients = pizza.Ingredients,
                     Description = pizza.Description,
+                    ImageUrl = pizza.ImageUrl
                 };
                 return model;
             }
         }
         return null;
+    }
+
+    public async Task<bool> EditPizza(EditPageViewModel model)
+    {
+        var pizza = await context.Pizzas
+            .SingleOrDefaultAsync(p => p.Id == model.Pizza.Id);
+        if (pizza != null)
+        {
+            pizza.Name = model.Pizza.Name;
+            pizza.Price = model.Pizza.Price;
+            pizza.ImageUrl = model.Pizza.ImageUrl;
+            pizza.Description = model.Pizza.Description;
+            await context.SaveChangesAsync();
+            return true;
+        }
+        return false;
+}
+
+    public async Task<bool> AddIngredient(Guid ingId, Guid pizzaId)
+    {
+        if (ingId != null && pizzaId != null)
+        {
+            var ingredient = new PizzaIngredient()
+            {
+                IngredientId = ingId,
+                PizzaId = pizzaId
+            };
+            await context.PizzaIngredients.AddAsync(ingredient);
+            await context.SaveChangesAsync();
+            return true;
+        }
+        return false;
+    }
+    public async Task<bool> RemoveIngredient(Guid ingId, Guid pizzaId)
+    {
+        if (ingId != null && pizzaId != null)
+        {
+            var ingredient = new PizzaIngredient()
+            {
+                IngredientId = ingId,
+                PizzaId = pizzaId
+            };
+            context.PizzaIngredients.Remove(ingredient);
+            await context.SaveChangesAsync();
+            return true;
+        }
+        return false;
     }
 
 
@@ -90,5 +139,53 @@ public class AdminService : IAdminService
         
         return false;
     }
-    
+
+    public async Task<bool> DeleteIngredient(Guid? id)
+    {
+        if (id != null)
+        {
+            var ing = await context.Ingredients.SingleOrDefaultAsync(i => i.Id == id);
+            if (ing != null)
+            {
+                context.Remove(ing);
+                await context.SaveChangesAsync();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public async Task<bool> CreatePizza(EditPageViewModel model)
+    {
+        if (model != null)
+        {
+            var pizza = new Models.Pizza()
+            {
+                Id = Guid.NewGuid(),
+                Name = model.Pizza.Name,
+                Price = model.Pizza.Price,
+                ImageUrl = model.Pizza.ImageUrl,
+                Description = model.Pizza.Description,
+            };
+            if (pizza != null)
+            {
+                await context.Pizzas.AddAsync(pizza);
+                await context.SaveChangesAsync();
+                foreach (var ingredient in model.Ingredients)
+                {
+                    var pizzaIng = new PizzaIngredient()
+                    {
+                        IngredientId = ingredient.Id,
+                        PizzaId = pizza.Id
+                    };
+                    await context.PizzaIngredients.AddAsync(pizzaIng);
+                }
+                await context.SaveChangesAsync();
+                return true;
+            }
+
+            
+        }
+        return false;
+    }
 }

@@ -1,20 +1,104 @@
-
-
 @{
-    
+    ViewData["Title"] = "Admin Panel";
 }
 
-<div class="container mt-5 justify-content-center">
-    <h1 class="text-center mb-5">Admin Panel</h1>
-    <div class="row justify-content-center gap-4">
-        <a asp-controller="AdminController" asp-action="EditIngredientsIndex" class="col-3 border-0 rounded-2 p-3 fs-3 btn-dark text-center">
-            Edit Ingredients
-        </a >
-        <a asp-area="Admin" asp-controller="EditPizzas" asp-action="Index" class="col-3 border-0 rounded-2 p-3 fs-3 btn-dark text-center">
-            Edit Pizzas
-        </a>
-        <a asp-controller="AdminController" asp-action="ViewOrdersIndex" class="col-3 border-0 rounded-2 p-3 fs-3 btn-dark text-center">
-            View Orders
-        </a>
+<style>
+    /* Admin Dashboard Card Styling */
+    .admin-card {
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        border: none;
+        border-radius: 1rem;
+        background: white;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        text-decoration: none; /* Remove underline from anchor */
+        display: block;
+        height: 100%;
+        color: inherit;
+    }
+
+    /* Hover Effect: Lift up and show stronger shadow */
+    .admin-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        color: inherit; 
+    }
+
+    /* Icon Container - Circular background */
+    .icon-box {
+        width: 70px;
+        height: 70px;
+        background-color: #f8f9fa;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1.5rem;
+        transition: all 0.3s ease;
+    }
+
+    /* Specific Icon Colors on Hover */
+    .admin-card:hover .icon-box.ingredients { background-color: #d1e7dd; color: #198754; } /* Green */
+    .admin-card:hover .icon-box.pizzas { background-color: #f8d7da; color: #dc3545; } /* Red */
+    .admin-card:hover .icon-box.orders { background-color: #cfe2ff; color: #0d6efd; } /* Blue */
+
+    .card-title {
+        font-weight: 700;
+        font-size: 1.35rem;
+        color: #343a40;
+        margin-bottom: 0.5rem;
+    }
+
+    .card-text {
+        color: #6c757d;
+        font-size: 0.95rem;
+        line-height: 1.5;
+    }
+</style>
+
+<div class="container py-5">
+    
+    <div class="text-center mb-5">
+        <h1 class="fw-bold display-5 text-dark">Admin Dashboard</h1>
+        <p class="text-muted fs-5">Manage your menu, inventory, and customer orders from one place.</p>
+    </div>
+
+    <div class="row justify-content-center g-4">
+        
+        <div class="col-md-6 col-lg-4">
+            <a asp-controller="EditIngredients" asp-action="Index" class="card admin-card p-4 text-center h-100">
+                <div class="card-body d-flex flex-column align-items-center">
+                    <div class="icon-box ingredients fs-2 text-secondary">
+                        <i class="fas fa-carrot"></i>
+                    </div>
+                    <h5 class="card-title">Edit Ingredients</h5>
+                    <p class="card-text">Manage stock, add new toppings, update prices, or remove items.</p>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+            <a asp-area="Admin" asp-controller="EditPizzas" asp-action="Index" class="card admin-card p-4 text-center h-100">
+                <div class="card-body d-flex flex-column align-items-center">
+                    <div class="icon-box pizzas fs-2 text-secondary">
+                        <i class="fas fa-pizza-slice"></i>
+                    </div>
+                    <h5 class="card-title">Edit Pizzas</h5>
+                    <p class="card-text">Create new pizzas, modify recipes, set prices, and manage the menu.</p>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+            <a asp-controller="AdminController" asp-action="ViewOrdersIndex" class="card admin-card p-4 text-center h-100">
+                <div class="card-body d-flex flex-column align-items-center">
+                    <div class="icon-box orders fs-2 text-secondary">
+                        <i class="fas fa-clipboard-list"></i>
+                    </div>
+                    <h5 class="card-title">View Orders</h5>
+                    <p class="card-text">Track incoming orders, view history, and manage delivery status.</p>
+                </div>
+            </a>
+        </div>
+
     </div>
 </div>

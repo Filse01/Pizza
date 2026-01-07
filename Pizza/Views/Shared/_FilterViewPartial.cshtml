@@ -1,4 +1,4 @@
-@using IngredientsViewModel = Pizza.ViewModels.IngredientsViewModel
+@*@using IngredientsViewModel = Pizza.ViewModels.IngredientsViewModel
 @model IEnumerable<IngredientsViewModel>
 @{
     Layout = null;
@@ -45,4 +45,48 @@
     label{
         color:white;
     }
-</style>
+</style>*@
+@using IngredientsViewModel = Pizza.ViewModels.IngredientsViewModel
+@model IEnumerable<IngredientsViewModel>
+@{
+    Layout = null;
+}
+
+<aside class="sticky-top" style="top: 20px; z-index: 100;">
+    <div class="card bg-dark text-white border-secondary shadow-sm">
+        <div class="card-header border-secondary">
+            <h5 class="mb-0">
+                <i class="bi bi-funnel"></i> Filters
+            </h5>
+        </div>
+        
+        <div class="card-body p-0">
+            <div class="d-lg-none p-3">
+                <button class="btn btn-outline-light w-100" type="button" data-bs-toggle="collapse" data-bs-target="#filterCollapse" aria-expanded="false" aria-controls="filterCollapse">
+                    Show Ingredients
+                </button>
+            </div>
+
+            <div class="collapse d-lg-block" id="filterCollapse">
+                <div class="p-3">
+                    <p class="text-muted small text-uppercase fw-bold mb-3">Ingredients</p>
+                    <div class="d-grid gap-2">
+                        @foreach (var ing in Model)
+                        {
+                            <div class="form-check">
+                                <input class="form-check-input ingredient-filter bg-secondary border-0" 
+                                       type="checkbox" 
+                                       value="@ing.Id" 
+                                       id="ing-@ing.Id"
+                                       style="cursor: pointer;">
+                                <label class="form-check-label text-light" for="ing-@ing.Id" style="cursor: pointer;">
+                                    @ing.Name
+                                </label>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</aside>

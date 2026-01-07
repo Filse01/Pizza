@@ -124,11 +124,10 @@
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-lg-8">
-            <form asp-controller="EditPizzas" asp-action="EditPizza">
-                <input type="hidden" asp-for="Pizza.Id" />
+            <form asp-controller="EditPizzas" asp-action="CreatePizza">
                 <div class="card pizza-card">
                     <div class="card-header-custom">
-                        <h3 class="mb-0"><i class="fas fa-pizza-slice me-2"></i>Edit Pizza</h3>
+                        <h3 class="mb-0"><i class="fas fa-pizza-slice me-2"></i>Create Pizza</h3>
                     </div>
 
                     <div class="card-body p-4">
@@ -178,17 +177,7 @@
 
                         <label class="form-label small text-secondary">Current Ingredients (Hover to remove)</label>
                         <div class="ingredients-box" id="ingredients-container">
-                            @foreach (var ing in Model.Pizza.Ingredients)
-                            {
-                                <div class="ingredient-chip" id="@ing.Ingredient.Id">
-                                    <span>@ing.Ingredient.Name</span>
-                                    <i class="fas fa-times delete-icon"></i>
-                                </div>
-                            }
-                            @if (!Model.Pizza.Ingredients.Any())
-                            {
-                                <p class="text-muted small m-auto fst-italic empty-msg">No ingredients added yet.</p>
-                            }
+                            
                         </div>
                     </div>
 
@@ -282,27 +271,27 @@
             // Check if already added to prevent duplicates visually
             if(document.getElementById(ingredientObj.id)) {
                 inputBox.value = "";
-                return; 
+                return;
             }
 
-            let pizzaId = window.location.href.split("/").pop(); // Logic from original code
-
-            let params = new URLSearchParams({
-                ingId: ingredientObj.id,
-                pizzaId: pizzaId
-            });
-
             try {
-                // Perform Server Request
-                await fetch(`@Url.Action("AddIngredient", "EditPizzas")?${params.toString()}`, {method: "POST"});
-
                 // Create UI Element (Chip style)
                 const chip = document.createElement("div");
                 chip.classList.add("ingredient-chip");
                 chip.id = ingredientObj.id;
                 
                 // Inner HTML structure for animation
-                chip.innerHTML = `<span>${ingredientObj.name}</span><i class="fas fa-times delete-icon"></i>`;
+                const index = ingredientObj.id;
+
+                chip.innerHTML = `
+    <span>${ingredientObj.name}</span>
+    <i class="fas fa-times delete-icon"></i>
+
+    <input type="hidden" name="Ingredients.Index" value="${index}" />
+
+    <input type="hidden" name="Ingredients[${index}].Id" value="${ingredientObj.id}" />
+    <input type="hidden" name="Ingredients[${index}].Name" value="${ingredientObj.name}" />
+`;
 
                 // Handle Empty State Message
                 if(emptyMsg) emptyMsg.style.display = 'none';
@@ -352,241 +341,3 @@
         })
     }
 </script>
-@*
-MINE
-@using EditPizzaViewModel = Pizza.ViewModels.EditPizzaViewModel
-
-@using EditPageViewModel = Pizza.ViewModels.EditPageViewModel
-
-@model EditPageViewModel
-
-<form asp-controller="EditPizzas" asp-action="EditPizza">
-
-<div class="container">
-
-<div>
-
-<label asp-for="Pizza.Name" class="form-label">Pizza Name</label>
-
-<input asp-for="Pizza.Name" class="form-control" placeholder="Enter Pizza Name"/>
-
-</div>
-
-<div>
-
-<label asp-for="Pizza.Price" class="form-label">Pizza Price</label>
-
-<input asp-for="Pizza.Price" class="form-control" type="number" placeholder="Enter Pizza Price"/>
-
-</div>
-
-<div>
-
-<label asp-for="Pizza.ImageUrl" class="form-label">Pizza Image</label>
-
-<input asp-for="Pizza.ImageUrl" class="form-control" placeholder="Enter Pizza Image"/>
-
-</div>
-
-<div>
-
-<label asp-for="Pizza.Description" class="form-label">Pizza Description</label>
-
-<input asp-for="Pizza.Description" class="form-control" placeholder="Enter Pizza Description"/>
-
-</div>
-
-<div>
-
-<label>Ingredients</label>
-
-<br>
-
-<div>
-
-<input type="text" id="input-box" placeholder="Search Ingredient" autocomplete="off">
-
-<button class="addIngredient">Add</button>
-
-</div>
-
-
-
-<div class="result-box"></div>
-
-</div>
-
-<div class="ingredients-box">
-
-@foreach (var ing in Model.Pizza.Ingredients)
-
-{
-
-<text>
-
-<a class="ingredient" id="@ing.Ingredient.Id">@ing.Ingredient.Name</a>
-
-</text>
-
-}
-
-</div>
-
-</div>
-
-</form>
-
-
-
-<script>
-
-let availableIngredients = [
-
-@foreach (var ing in Model.Ingredients)
-
-{
-
-<text>
-
-{id: "@ing.Id", name: "@ing.Name"},
-
-</text>
-
-}
-
-];
-
-const resultBox = document.querySelector(".result-box");
-
-const inputBox = document.querySelector("#input-box");
-
-const addIngButton = document.querySelector(".addIngredient");
-
-const ingredients = document.getElementsByClassName("ingredient");
-
-const ingredientsBox = document.querySelector(".ingredients-box");
-
-for(const ing of ingredients){
-
-addIngEventListener(ing);
-
-}
-
-inputBox.onkeyup = function () {
-
-let result = [];
-
-let input = inputBox.value;
-
-if (input.length > 0) {
-
-result = availableIngredients.filter((i) => {
-
-return i.name.toLowerCase().includes(input.toLowerCase());
-
-})
-
-console.log(result);
-
-}
-
-display(result);
-
-}
-
-
-
-function display(result) {
-
-const content = result.map((list) => {
-
-return "<li onclick=selectedInput(this)>" + list.name + "</li>";
-
-})
-
-resultBox.innerHTML = "<ul>" + content.join("") + "<ul>";
-
-}
-
-
-
-function selectedInput(list) {
-
-inputBox.value = list.innerHTML;
-
-resultBox.innerHTML = "";
-
-}
-
-
-
-addIngButton.addEventListener("click", async function (e) {
-
-e.preventDefault();
-
-e.stopPropagation();
-
-if (inputBox.value != "") {
-
-let ingId = availableIngredients.find(({name}) => name.toLowerCase() === inputBox.value.toLowerCase());
-
-let pizzaId = window.location.href.split("/").pop();
-
-console.log(pizzaId);
-
-let params = new URLSearchParams({
-
-ingId: ingId.id,
-
-pizzaId: pizzaId
-
-});
-
-let request = await fetch(`@Url.Action("AddIngredient", "EditPizzas")?${params.toString()}`, {method: "POST"});
-
-const a = document.createElement("a");
-
-a.textContent = inputBox.value;
-
-a.classList.add("ingredient");
-
-a.id = ingId.id;
-
-ingredientsBox.appendChild(a);
-
-addIngEventListener(a);
-
-inputBox.value = "";
-
-}
-
-})
-
-function addIngEventListener(ing){
-
-ing.addEventListener("click", async function(){
-
-let ingId = ing.id;
-
-let pizzaId = window.location.href.split("/").pop();
-
-let params = new URLSearchParams({
-
-ingId: ingId,
-
-pizzaId: pizzaId
-
-});
-
-let request = await fetch(`@Url.Action("RemoveIngredient", "EditPizzas")?${params.toString()}`, {method: "POST"});
-
-ing.remove();
-
-})
-
-}
-
-</script>
-
-
-*@

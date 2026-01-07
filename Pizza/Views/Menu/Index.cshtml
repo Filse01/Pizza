@@ -1,4 +1,4 @@
-@using MenuPageViewModel = Pizza.ViewModels.MenuPageViewModel
+@*@using MenuPageViewModel = Pizza.ViewModels.MenuPageViewModel
 @model MenuPageViewModel
 @{
     ViewData["Title"] = "Menu";
@@ -68,5 +68,92 @@ document.addEventListener("DOMContentLoaded", function () {
     .card:hover {
         transform: translateY(-5px);
         box-shadow: 0 12px 25px rgba(0,0,0,0.3);
+    }
+</style>*@
+@using MenuPageViewModel = Pizza.ViewModels.MenuPageViewModel
+@model MenuPageViewModel
+@{
+    ViewData["Title"] = "Menu";
+    Layout = "_Layout";
+}
+
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-md-3 col-lg-2 mb-4">
+             @section Sidebar {
+                }
+             <partial name="_FilterViewPartial" model="Model.Ingredients"/>
+        </div>
+
+        <div class="col-md-9 col-lg-10">
+            <div id="pizza-grid" class="row g-4">
+                @foreach (var pizza in Model.Pizzas)
+                {
+                    <div class="col-sm-6 col-lg-4 col-xl-3">
+                        <div class="card h-100 bg-dark text-white border-secondary shadow-sm">
+                            <div class="ratio ratio-4x3">
+                                <img src="@pizza.ImageUrl" class="card-img-top object-fit-cover rounded-top" alt="@pizza.Name">
+                            </div>
+                            
+                            <div class="card-body d-flex flex-column">
+                                <div class="mb-auto">
+                                    <h5 class="card-title fw-bold text-warning">@pizza.Name</h5>
+                                    <p class="card-text text-light opacity-75 small">
+                                        @string.Join(", ", pizza.Ingredients.Select(i => i.Ingredient.Name))
+                                    </p>
+                                </div>
+                                <div class="mt-3">
+                                    <a href="#" class="btn btn-outline-warning w-100 fw-bold">Add To Cart</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const ingredientCheckboxes = document.querySelectorAll(".ingredient-filter");
+    // Updated selector to target the ID we added
+    const pizzaContainer = document.getElementById("pizza-grid");
+
+    function loadFilteredPizzas() {
+        const selectedIngredients = Array.from(ingredientCheckboxes)
+            .filter(cb => cb.checked)
+            .map(cb => cb.value);
+
+        const params = new URLSearchParams();
+        selectedIngredients.forEach(id => params.append("ingredients", id));
+       
+        fetch(`/Menu/FilterPizzas?${params.toString()}`)
+            .then(response => response.text())
+            .then(html => {
+                pizzaContainer.innerHTML = html;
+            });
+    }
+
+    ingredientCheckboxes.forEach(cb => cb.addEventListener("change", loadFilteredPizzas));
+});
+</script>
+
+<style>
+    body {
+        /* Dark background for the whole page to match the cards */
+        background: #56606b url("images/6464325.jpg") no-repeat fixed center;
+        background-size: cover;
+        background-blend-mode: overlay; /* Blends the image with the dark color */
+    }
+    
+    /* Subtle hover effect for cards */
+    .card {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.5) !important;
+        border-color: #ffc107 !important; /* Warning color border on hover */
     }
 </style>

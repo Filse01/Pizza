@@ -15,6 +15,8 @@ public class PizzaDbContext : IdentityDbContext
     public DbSet<PizzaIngredient> PizzaIngredients { get; set; } = null!;
     public DbSet<Ingredient> Ingredients { get; set; } = null!;
     public DbSet<Models.Pizza> Pizzas { get; set; } = null!;
+    public DbSet<Cart> Carts { get; set; } = null!;
+    public DbSet<CartItem> CartItems { get; set; } = null!;
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

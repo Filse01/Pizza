@@ -122,7 +122,9 @@ MINE
 }
 
 <div class="container py-5">
+    <a asp-controller="Home" asp-action="Index" class="btn btn-dark p-2 mb-1">← Back</a>
     
+
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             <h2 class="mb-1 fw-bold text-dark">Manage Pizzas</h2>
@@ -148,57 +150,57 @@ MINE
         <div class="table-responsive">
             <table class="table table-custom">
                 <thead>
-                    <tr>
-                        <th scope="col" style="width: 25%;">Pizza Name</th>
-                        <th scope="col" style="width: 40%;">Ingredients</th>
-                        <th scope="col" style="width: 15%;">Price</th>
-                        <th scope="col" style="width: 20%; text-align: right;">Actions</th>
-                    </tr>
+                <tr>
+                    <th scope="col" style="width: 25%;">Pizza Name</th>
+                    <th scope="col" style="width: 40%;">Ingredients</th>
+                    <th scope="col" style="width: 15%;">Price</th>
+                    <th scope="col" style="width: 20%; text-align: right;">Actions</th>
+                </tr>
                 </thead>
                 <tbody>
-                    @foreach (var pizza in Model.Pizzas)
-                    {
-                        <tr>
-                            <td class="fw-bold text-dark">
-                                @pizza.Name
-                            </td>
-                            
-                            <td>
-                                @if (pizza.Ingredients != null && pizza.Ingredients.Any())
+                @foreach (var pizza in Model.Pizzas)
+                {
+                    <tr>
+                        <td class="fw-bold text-dark">
+                            @pizza.Name
+                        </td>
+
+                        <td>
+                            @if (pizza.Ingredients != null && pizza.Ingredients.Any())
+                            {
+                                @foreach (var ing in pizza.Ingredients)
                                 {
-                                    @foreach (var ing in pizza.Ingredients)
-                                    {
-                                        <span class="badge-ingredient">@ing.Ingredient.Name</span>
-                                    }
+                                    <span class="badge-ingredient">@ing.Ingredient.Name</span>
                                 }
-                                else
-                                {
-                                    <span class="text-muted small fst-italic">No ingredients listed</span>
-                                }
-                            </td>
-                            
-                            <td>
-                                <span class="price-tag">$@pizza.Price.ToString("F2")</span>
-                            </td>
-                            
-                            <td>
-                                <div class="action-group justify-content-end">
-                                    <a href="@Url.Action("EditPizza", "EditPizzas", new { id = pizza.Id })" 
-                                       class="btn btn-outline-primary btn-sm" 
-                                       title="Edit Pizza">
-                                        <i class="fas fa-pen"></i> <span class="d-none d-md-inline">Edit</span>
-                                    </a>
-                                
-                                    <a asp-controller="EditPizzas" asp-action="DeletePizza" asp-route-id="@pizza.Id" 
-                                       class="btn btn-outline-danger btn-sm" 
-                                       onclick="return confirm('Are you sure you want to delete @pizza.Name?');"
-                                       title="Delete Pizza">
-                                        <i class="fas fa-trash"></i> <span class="d-none d-md-inline">Delete</span>
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
-                    }
+                            }
+                            else
+                            {
+                                <span class="text-muted small fst-italic">No ingredients listed</span>
+                            }
+                        </td>
+
+                        <td>
+                            <span class="price-tag">$@pizza.Price.ToString("F2")</span>
+                        </td>
+
+                        <td>
+                            <div class="action-group justify-content-end">
+                                <a href="@Url.Action("EditPizza", "EditPizzas", new { id = pizza.Id })"
+                                   class="btn btn-outline-primary btn-sm"
+                                   title="Edit Pizza">
+                                    <i class="fas fa-pen"></i> <span class="d-none d-md-inline">Edit</span>
+                                </a>
+
+                                <a asp-controller="EditPizzas" asp-action="DeletePizza" asp-route-id="@pizza.Id"
+                                   class="btn btn-outline-danger btn-sm"
+                                   onclick="return confirm('Are you sure you want to delete @pizza.Name?');"
+                                   title="Delete Pizza">
+                                    <i class="fas fa-trash"></i> <span class="d-none d-md-inline">Delete</span>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
                 </tbody>
             </table>
         </div>

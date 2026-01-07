@@ -1,4 +1,4 @@
-@using IndexMenuViewModel = Pizza.ViewModels.IndexMenuViewModel
+@*@using IndexMenuViewModel = Pizza.ViewModels.IndexMenuViewModel
 @model IEnumerable<IndexMenuViewModel>
 
 @foreach (var pizza in Model)
@@ -9,6 +9,31 @@
             <h5 class="card-title">@pizza.Name</h5>
             <p class="card-text">@string.Join(", ", pizza.Ingredients.Select(i => i.Ingredient.Name))</p>
             <a href="#" class="btn btn-primary">Add To Cart</a>
+        </div>
+    </div>
+}*@
+@using IndexMenuViewModel = Pizza.ViewModels.IndexMenuViewModel
+@model IEnumerable<IndexMenuViewModel>
+
+@foreach (var pizza in Model)
+{
+    <div class="col-sm-6 col-lg-4 col-xl-3">
+        <div class="card h-100 bg-dark text-white border-secondary shadow-sm">
+            <div class="ratio ratio-4x3">
+                <img src="@pizza.ImageUrl" class="card-img-top object-fit-cover rounded-top" alt="@pizza.Name">
+            </div>
+            
+            <div class="card-body d-flex flex-column">
+                <div class="mb-auto">
+                    <h5 class="card-title fw-bold text-warning">@pizza.Name</h5>
+                    <p class="card-text text-light opacity-75 small">
+                        @string.Join(", ", pizza.Ingredients.Select(i => i.Ingredient.Name))
+                    </p>
+                </div>
+                <div class="mt-3">
+                    <a href="#" class="btn btn-outline-warning w-100 fw-bold">Add To Cart</a>
+                </div>
+            </div>
         </div>
     </div>
 }
