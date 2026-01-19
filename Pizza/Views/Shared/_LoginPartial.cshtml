@@ -19,10 +19,25 @@
     else
     {
         <li class="nav-item">
-            <a class="nav-link text-white" asp-area="Identity" asp-page="/Account/Register">Register</a>
+            <form class="form-inline" asp-area="Identity" asp-page="/Account/Register" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                <button type="submit" class="nav-link btn btn-link text-white">Register</button>
+            </form>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-white" asp-area="Identity" asp-page="/Account/Login">Login</a>
+            <form class="form-inline" asp-area="Identity" asp-page="/Account/Login" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                <button type="submit" class="nav-link btn btn-link text-white">Login</button>
+            </form>
         </li>
     }
+    <style>
+        .btn {
+            display: inline-block;
+            padding: .9rem 1.25rem;      /* This fixes the padding */
+            border-radius: 999px;
+            font-weight: 600;            /* This fixes the boldness */
+            text-decoration: none;
+            transition: transform .12s ease, box-shadow .12s ease, background-color .2s ease, color .2s ease;
+            margin: .25rem .4rem;        /* This fixes the margins */
+        }
+    </style>
 </ul>

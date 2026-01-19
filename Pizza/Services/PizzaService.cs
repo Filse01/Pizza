@@ -21,6 +21,7 @@ public class PizzaService : IPizzaService
             .ThenInclude(p => p.Ingredient)
             .Select(c =>  new IndexMenuViewModel
         {
+            Id = c.Id,
             Description = c.Description,
             ImageUrl = c.ImageUrl,
             Name = c.Name,

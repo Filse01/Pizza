@@ -18,8 +18,9 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => options.Sign
     .AddDefaultTokenProviders()
     .AddEntityFrameworkStores<PizzaDbContext>();
 builder.Services.AddControllersWithViews();
-builder.Services.AddScoped<IPizzaService,  PizzaService>();
-builder.Services.AddScoped<IAdminService,  AdminService>();
+builder.Services.AddScoped<IPizzaService, PizzaService>();
+builder.Services.AddScoped<IAdminService, AdminService>();
+builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddRazorPages();
 var app = builder.Build();
 
