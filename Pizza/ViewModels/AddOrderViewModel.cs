@@ -1,13 +1,9 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Pizza.Models;
+namespace Pizza.ViewModels;
 
-public class Order
+public class AddOrderViewModel
 {
-    public Guid Id { get; set; }
-    public string UserId { get; set; }
-    public DateTime OrderDate { get; set; }
-    public List<OrderItem> Pizzas { get; set; }
     [MaxLength(50)] 
     public string FirstName { get; set; } = null!;
     [MaxLength(50)] 

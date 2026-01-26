@@ -10,7 +10,8 @@ public class CartItem
     [Required]
     public Guid CartId { get; set; }
     [Required]
-    public Guid ProductId { get; set; }
+    public Guid PizzaId { get; set; }
+    public Pizza Pizza { get; set; }
     [Required]
     public int Quantity { get; set; }
 }
