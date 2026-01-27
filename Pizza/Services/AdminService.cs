@@ -3,6 +3,7 @@ using Pizza.Data;
 using Pizza.Models;
 using Pizza.Services.Contracts;
 using Pizza.ViewModels;
+using Pizza.ViewModels.Orders;
 
 namespace Pizza.Services;
 
@@ -48,6 +49,28 @@ public class AdminService : IAdminService
             return ings;
         }
         return null;
+    }
+
+    public async Task<IEnumerable<OrderIndexViewModel>> GetAllOrders()
+    {
+        var orders = await context.Orders
+            .Include(o => o.Pizzas)
+            .ThenInclude(p => p.Pizza)
+            .Select(o => new OrderIndexViewModel()
+            {
+                Id = o.Id,
+                Address = o.Address,
+                FirstName = o.FirstName,
+                LastName = o.LastName,
+                OrderDate = o.OrderDate,
+                OrderItems = o.Pizzas,
+                Price = o.Pizzas.Where(p => p.OrderId == o.Id).Sum(p => p.UnitPrice),
+                PhoneNumber = o.PhoneNumber
+            })
+            .ToListAsync();
+        return orders;
+
+
     }
 
     public async Task<EditPizzaViewModel> GetAPizza(Guid? id)
