@@ -43,6 +43,29 @@ public class CartService : ICartService
         return false;
     }
 
+    public async Task<bool> RemoveFromCart(string userId, Guid cartId)
+    {
+        if (userId != null && cartId != null)
+        {
+            var cart = await context.Carts
+                .Include(p => p.CartItems)
+                .SingleOrDefaultAsync(u => u.UserId.ToString() == userId);
+            if (cart != null)
+            {
+                foreach (var item in cart.CartItems)
+                {
+                    if (item.Id == cartId)
+                    {
+                        context.Remove(item);
+                    }
+                }
+            }
+            
+            return true;
+        }
+        return false;
+    }
+
     public async Task<CartViewModel> GetCart(string userId)
     {
         if (userId != null)
@@ -57,6 +80,7 @@ public class CartService : ICartService
                 {
                     Id = cart.Id,
                     CartItems = cart.CartItems,
+                    Price = cart.CartItems.Sum(c => c.Pizza.Price * c.Quantity),
                 };
                 return model;
             }
@@ -89,6 +113,16 @@ public class CartService : ICartService
                     Quantity = cartItem.Quantity,
                     UnitPrice = cartItem.Pizza.Price * cartItem.Quantity
                 });
+            }
+
+            var coupon =
+                await context.Coupons.SingleOrDefaultAsync(c => c.Name.ToLower() == model.Coupon.Name.ToLower());
+            if (coupon != null)
+            {
+                foreach (var orderItem in orderItems)
+                {
+                    orderItem.UnitPrice = (orderItem.UnitPrice * (100 - coupon.DiscountPercentage)) / 100;
+                }
             }
 
             order.Pizzas = orderItems;

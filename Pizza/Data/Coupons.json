@@ -1,0 +1,27 @@
+[
+  {
+    "Id": "b1a3c2d4-1111-4a22-8f10-000000000001",
+    "Name": "WELCOME10",
+    "DiscountPercentage": 10
+  },
+  {
+    "Id": "b1a3c2d4-1111-4a22-8f10-000000000002",
+    "Name": "SPRING15",
+    "DiscountPercentage": 15
+  },
+  {
+    "Id": "b1a3c2d4-1111-4a22-8f10-000000000003",
+    "Name": "SUMMER20",
+    "DiscountPercentage": 20
+  },
+  {
+    "Id": "b1a3c2d4-1111-4a22-8f10-000000000004",
+    "Name": "VIP25",
+    "DiscountPercentage": 25
+  },
+  {
+    "Id": "b1a3c2d4-1111-4a22-8f10-000000000005",
+    "Name": "BLACKFRIDAY30",
+    "DiscountPercentage": 30
+  }
+]

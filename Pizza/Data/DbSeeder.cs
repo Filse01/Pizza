@@ -21,7 +21,8 @@ public static class DbSeeder
         await SeedAdminUserAsync(userManager);
         await SeedIngredientAsync(context);
         await SeedPizzaAsync(context);
-     }
+        await SeedCouponsAsync(context);
+    }
 
     private static async Task SeedRolesAsync(RoleManager<IdentityRole> roleManager)
     {
@@ -67,19 +68,19 @@ public static class DbSeeder
         string ingredientJson = File.ReadAllText(path);
         try
         {
-            var exercises = JsonSerializer.Deserialize<List<Ingredient>>(ingredientJson,
+            var ingredients = JsonSerializer.Deserialize<List<Ingredient>>(ingredientJson,
                 new JsonSerializerOptions
                 {
                     PropertyNameCaseInsensitive = true,
                     Converters = { new JsonStringEnumConverter() } 
                 });
-            if (exercises != null && exercises.Count > 0)
+            if (ingredients != null && ingredients.Count > 0)
             {
-                foreach (var exercise in exercises)
+                foreach (var ing in ingredients)
                 {
-                    if (await dbContext.Ingredients.AnyAsync(e => exercise.Name == e.Name) == false)
+                    if (await dbContext.Ingredients.AnyAsync(e => ing.Name == e.Name) == false)
                     {
-                        await dbContext.Ingredients.AddAsync(exercise);
+                        await dbContext.Ingredients.AddAsync(ing);
                     }
                 }
                 await dbContext.SaveChangesAsync();
@@ -96,19 +97,48 @@ public static class DbSeeder
         string pizzaJson = File.ReadAllText(path);
         try
         {
-            var exercises = JsonSerializer.Deserialize<List<Models.Pizza>>(pizzaJson,
+            var pizzas = JsonSerializer.Deserialize<List<Models.Pizza>>(pizzaJson,
                 new JsonSerializerOptions
                 {
                     PropertyNameCaseInsensitive = true,
                     Converters = { new JsonStringEnumConverter() } 
                 });
-            if (exercises != null && exercises.Count > 0)
+            if (pizzas != null && pizzas.Count > 0)
             {
-                foreach (var exercise in exercises)
+                foreach (var pizza in pizzas)
                 {
-                    if (await dbContext.Pizzas.AnyAsync(e => exercise.Name == e.Name) == false)
+                    if (await dbContext.Pizzas.AnyAsync(e => pizza.Name == e.Name) == false)
                     {
-                        await dbContext.Pizzas.AddAsync(exercise);
+                        await dbContext.Pizzas.AddAsync(pizza);
+                    }
+                }
+                await dbContext.SaveChangesAsync();
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Deserialization failed: {ex}");
+        }
+    }
+    public static async Task SeedCouponsAsync(PizzaDbContext dbContext)
+    {
+        var path = Path.Combine("..","Pizza","Data","Coupons.json");
+        string couponJson = File.ReadAllText(path);
+        try
+        {
+            var coupons = JsonSerializer.Deserialize<List<Coupon>>(couponJson,
+                new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true,
+                    Converters = { new JsonStringEnumConverter() } 
+                });
+            if (coupons != null && coupons.Count > 0)
+            {
+                foreach (var coupon in coupons)
+                {
+                    if (await dbContext.Coupons.AnyAsync(e => coupon.Name == e.Name) == false)
+                    {
+                        await dbContext.Coupons.AddAsync(coupon);
                     }
                 }
                 await dbContext.SaveChangesAsync();

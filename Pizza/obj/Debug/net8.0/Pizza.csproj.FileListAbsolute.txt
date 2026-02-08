@@ -542,3 +542,4 @@
 /home/filse/Documents/Pizza/Pizza/obj/Debug/net8.0/Pizza.pdb
 /home/filse/Documents/Pizza/Pizza/obj/Debug/net8.0/Pizza.genruntimeconfig.cache
 /home/filse/Documents/Pizza/Pizza/obj/Debug/net8.0/ref/Pizza.dll
+/home/filse/Documents/Pizza/Pizza/bin/Debug/net8.0/Data/Coupons.json
