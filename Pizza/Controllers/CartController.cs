@@ -55,4 +55,19 @@ public class CartController : Controller
         }
         return View("Index", model);
     }
+
+    
+    public async Task<IActionResult> RemoveFromCart(Guid cartItemId)
+    {
+        var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (userId != null && cartItemId != null)
+        {
+            bool result = await _cartService.RemoveFromCart(userId, cartItemId);
+            if (result)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+        }
+        return BadRequest("Failed");
+    }
 }

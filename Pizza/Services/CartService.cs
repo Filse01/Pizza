@@ -42,10 +42,10 @@ public class CartService : ICartService
         }
         return false;
     }
-
-    public async Task<bool> RemoveFromCart(string userId, Guid cartId)
+    
+    public async Task<bool> RemoveFromCart(string userId, Guid cartItemId)
     {
-        if (userId != null && cartId != null)
+        if (userId != null && cartItemId != null)
         {
             var cart = await context.Carts
                 .Include(p => p.CartItems)
@@ -54,12 +54,13 @@ public class CartService : ICartService
             {
                 foreach (var item in cart.CartItems)
                 {
-                    if (item.Id == cartId)
+                    if (item.Id == cartItemId)
                     {
                         context.Remove(item);
                     }
                 }
             }
+            await context.SaveChangesAsync();
             
             return true;
         }
