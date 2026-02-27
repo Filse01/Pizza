@@ -8,4 +8,5 @@ public interface ICartService
     Task<bool> RemoveFromCart(string userId, Guid pizzaId);
     Task<CartViewModel> GetCart(string userId);
     Task<bool> CreateOrder(AddOrderPageViewModel order, string userId);
+    Task<bool> CreateMail(string userId);
 }

@@ -1,18 +1,28 @@
+using System.Net.Mail;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using MimeKit;
 using Pizza.Data;
 using Pizza.Models;
+using Pizza.Secrets;
 using Pizza.Services.Contracts;
 using Pizza.ViewModels;
+using SmtpClient = MailKit.Net.Smtp.SmtpClient;
 
 namespace Pizza.Services;
 
 public class CartService : ICartService
 {
     private readonly PizzaDbContext context;
+    private readonly UserManager<IdentityUser> userManager;
+    private readonly GmailOptions gmailOptions;
 
-    public CartService(PizzaDbContext context)
+    public CartService(PizzaDbContext context,  UserManager<IdentityUser> userManager,  IOptions<GmailOptions> gmailOptions)
     {
         this.context = context;
+        this.userManager = userManager;
+        this.gmailOptions = gmailOptions.Value;
     }
     public async Task<bool> AddToCart(string userId, Guid pizzaId)
     {
@@ -116,16 +126,18 @@ public class CartService : ICartService
                 });
             }
 
-            var coupon =
-                await context.Coupons.SingleOrDefaultAsync(c => c.Name.ToLower() == model.Coupon.Name.ToLower());
-            if (coupon != null)
+            if (model.Coupon.Name != null)
             {
-                foreach (var orderItem in orderItems)
+                var coupon =
+                    await context.Coupons.SingleOrDefaultAsync(c => c.Name.ToLower() == model.Coupon.Name.ToLower());
+                if (coupon != null)
                 {
-                    orderItem.UnitPrice = (orderItem.UnitPrice * (100 - coupon.DiscountPercentage)) / 100;
+                    foreach (var orderItem in orderItems)
+                    {
+                        orderItem.UnitPrice = (orderItem.UnitPrice * (100 - coupon.DiscountPercentage)) / 100;
+                    }
                 }
             }
-
             order.Pizzas = orderItems;
             await context.AddAsync(order);
             await context.SaveChangesAsync();
@@ -133,6 +145,44 @@ public class CartService : ICartService
             await context.SaveChangesAsync();
             return true;
         }
+        return false;
+    }
+
+    public async Task<bool> CreateMail(string userId)
+    {
+        var user = await userManager.FindByIdAsync(userId);
+        if (user != null)
+        {
+            var message = new MimeMessage();
+            message.From.Add(new MailboxAddress("Philip Ognyanov", "philipdimitrov31@gmail.com"));
+            message.To.Add(new MailboxAddress($"{user.UserName}", $"{user.Email}"));
+            message.Subject = "Order";
+            message.Body = new TextPart("plain")
+            {
+                Text = "Order created!"
+            };
+            
+            var message1 = new MimeMessage();
+            message1.From.Add(new MailboxAddress("Philip Ognyanov", "philipdimitrov31@gmail.com"));
+            message1.To.Add(new MailboxAddress($"{user.UserName}", $"{user.Email}"));
+            message1.Subject = "Order";
+            message1.Body = new TextPart("plain")
+            {
+                Text = "Order created!"
+            };
+            
+            using (var client = new SmtpClient())
+            {
+                await client.ConnectAsync("smtp.gmail.com", 587, false);
+                await client.AuthenticateAsync("philipdimitrov31@gmail.com", gmailOptions.AppPassword);
+                await client.SendAsync(message);
+                await client.SendAsync(message1);
+                await client.DisconnectAsync(true);
+            }
+
+            return true;
+        }
+
         return false;
     }
 }

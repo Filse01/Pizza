@@ -48,6 +48,7 @@ public class CartController : Controller
         if (TryValidateModel(model) && userId != null)
         {
             bool result = await _cartService.CreateOrder(model, userId);
+            bool mailResult = await _cartService.CreateMail(userId);
             if (result == true)
             {
                 return RedirectToAction(nameof(Index));
