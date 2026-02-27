@@ -6,5 +6,5 @@ public class AddOrderPageViewModel
 {
     public AddOrderViewModel Order { get; set; }
     public CartViewModel Cart  { get; set; }
-    public CouponViewModel Coupon { get; set; }
+    public CouponViewModel? Coupon { get; set; }
 }
