@@ -9,4 +9,5 @@ public interface ICartService
     Task<CartViewModel> GetCart(string userId);
     Task<bool> CreateOrder(AddOrderPageViewModel order, string userId);
     Task<bool> CreateMail(string userId);
+    Task<CouponViewModel> ApplyCouponFrontend(string couponName);
 }

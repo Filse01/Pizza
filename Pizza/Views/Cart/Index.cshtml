@@ -21,7 +21,7 @@
                                 <small class="text-muted">@pizza.Pizza.Description</small>
                             </div>
                             <div class="d-flex align-items-center">
-                                <span class="text-light me-3">@pizza.Pizza.Price</span>
+                                <span id="pizzaPrice" class="text-light me-3">@pizza.Pizza.Price</span>
                                 <a asp-controller="Cart" asp-action="RemoveFromCart" asp-route-cartItemId="@pizza.Id"
                                    class="btn btn-sm btn-outline-danger border-0" title="Remove">
                                     &#10005;
@@ -43,7 +43,7 @@
 
                     <li class="list-group-item d-flex justify-content-between bg-dark-card border-secondary">
                         <span class="text-light">Total (EUR)</span>
-                        <strong class="text-white fs-5">€@Model.Cart.Price</strong>
+                        <strong  class="text-white fs-5">€<span id="cartPrice">@Model.Cart.Price</span></strong>
                     </li>
                 </ul>
             </div>
@@ -105,9 +105,9 @@
                     <div class="mb-4">
                         <label asp-for="Coupon.Name" class="form-label text-muted">Promo Code</label>
                         <div class="input-group">
-                            <input asp-for="Coupon.Name" type="text" class="form-control bg-dark text-light border-secondary" placeholder="Enter code here">
+                            <input id="couponName" asp-for="Coupon.Name" type="text" class="form-control bg-dark text-light border-secondary" placeholder="Enter code here">
                             
-                            <button type="submit" asp-action="ApplyCoupon" formnovalidate class="btn btn-secondary">Apply</button>
+                            <a id="buttonCoupon" formnovalidate class="btn btn-secondary">Apply</a>
                         </div>
                     </div>
 
@@ -117,6 +117,27 @@
         </div>
     </div>
 </div>
+<script>
+    let buttonCoupon = document.getElementById('buttonCoupon');
+    buttonCoupon.addEventListener('click', applyDiscount)
+    async function applyDiscount(){
+        let couponName = document.getElementById('couponName');
+        const query = new URLSearchParams({ couponName: couponName.value }).toString();
+        const finalUrl = `/Cart/ApplyCoupon?${query}`;
+        let response = await fetch(finalUrl);
+        let percentage = await response.json();
+        let cartPrice = document.getElementById('cartPrice');
+        let pizzaPrices = document.querySelectorAll('#pizzaPrice');
+        pizzaPrices.forEach((pizza) => {
+            pizza.textContent = (pizza.textContent * (100 - percentage) / 100).toFixed(2);
+        })
+        cartPrice.textContent = (cartPrice.textContent * (100 - percentage) / 100).toFixed(2);
+
+        if (response.status === 200) {
+            buttonCoupon.removeEventListener('click', applyDiscount)
+        }
+    }
+</script>
 
 <style>
     /* Dark Theme Styles */

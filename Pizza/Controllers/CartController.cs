@@ -71,4 +71,10 @@ public class CartController : Controller
         }
         return BadRequest("Failed");
     }
+    [HttpGet]
+    public async Task<int?> ApplyCoupon([FromQuery] string couponName)
+    {
+        var result = await _cartService.ApplyCouponFrontend(couponName);
+        return result.Percentage;
+    }
 }

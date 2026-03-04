@@ -1,5 +1,6 @@
 using System.Net.Mail;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using MimeKit;
@@ -184,5 +185,24 @@ public class CartService : ICartService
         }
 
         return false;
+    }
+
+    public async Task<CouponViewModel> ApplyCouponFrontend(string couponName)
+    {
+        if (couponName != null)
+        {
+            var coupon =
+                await context.Coupons.SingleOrDefaultAsync(c => c.Name.ToLower() == couponName.ToLower());
+            if (coupon != null)
+            {
+                return new CouponViewModel()
+                {
+                    Name =
+                        coupon.Name,
+                    Percentage = coupon.DiscountPercentage
+                };
+            }
+        }
+        return null;
     }
 }
