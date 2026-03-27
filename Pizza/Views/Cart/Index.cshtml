@@ -54,7 +54,7 @@
             <div class="card bg-dark-card border-0 shadow-lg p-4">
                 <h4 class="mb-4 text-white">Billing Address</h4>
                 
-                <form asp-controller="Cart" asp-action="AddOrder" class="needs-validation" novalidate method="post">
+                <form id="submit" asp-controller="Cart" asp-action="CreateCheckoutSession" asp-route-amount="@Model.Cart.Price" class="needs-validation" novalidate method="post">
                     
                     <div class="row g-3">
                         <div class="col-sm-6">

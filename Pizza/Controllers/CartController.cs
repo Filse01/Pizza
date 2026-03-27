@@ -2,18 +2,24 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
+using Pizza.Secrets;
 using Pizza.Services.Contracts;
 using Pizza.ViewModels;
+using Stripe;
+using Stripe.Checkout;
 
 namespace Pizza.Controllers;
 [Authorize]
 public class CartController : Controller
 {
     private readonly ICartService _cartService;
+    private readonly StripeOptions _stripeSettings;
 
-    public CartController(ICartService cartService)
+    public CartController(ICartService cartService,  IOptions<StripeOptions> stripeSettings)
     {
         _cartService = cartService;
+        _stripeSettings = stripeSettings.Value;
     }
     [Authorize]
     public async Task<IActionResult> Index()
@@ -76,5 +82,45 @@ public class CartController : Controller
     {
         var result = await _cartService.ApplyCouponFrontend(couponName);
         return result.Percentage;
+    }
+
+    public IActionResult CreateCheckoutSession(string amount)
+    {
+        var currency = "eur";
+        var successUrl = "http://localhost:5069/Cart";
+        var cancelUrl = "http://localhost:5069/Cart";
+
+        StripeConfiguration.ApiKey = _stripeSettings.SecretKey;
+        var options = new SessionCreateOptions
+        {
+            PaymentMethodTypes = new List<string>
+            {
+                "card"
+            },
+            LineItems = new List<SessionLineItemOptions>
+            {
+                new SessionLineItemOptions()
+                {
+                    PriceData = new SessionLineItemPriceDataOptions()
+                    {
+                        Currency = currency,
+                        UnitAmountDecimal = Convert.ToDecimal(amount) * 100,
+                        ProductData = new SessionLineItemPriceDataProductDataOptions
+                        {
+                            Name = "Pizza",
+                            Description = "Pizza"
+                        }
+                    },
+                    Quantity = 1
+                }
+            },
+            Mode = "payment",
+            SuccessUrl = successUrl,
+            CancelUrl = cancelUrl
+
+        };
+        var service = new SessionService();
+        var session = service.Create(options);
+        return Redirect(session.Url);
     }
 }
