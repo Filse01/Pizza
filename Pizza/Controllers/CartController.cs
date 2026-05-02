@@ -83,12 +83,28 @@ public class CartController : Controller
         var result = await _cartService.ApplyCouponFrontend(couponName);
         return result.Percentage;
     }
+    [Authorize]
+    public async Task<AddOrderPageViewModel> ApplyCouponBackend(AddOrderPageViewModel model, int percentage)
+    {
+        model.Cart.Price = (model.Cart.Price * (100 - percentage) / 100);
+        return model;
+    }
 
+    [HttpGet]
+    public async Task<IActionResult> Success()
+    {
+        return View();
+    }
+    [HttpGet]
+    public async Task<IActionResult> Cancel()
+    {
+        return View();
+    }
     public IActionResult CreateCheckoutSession(string amount)
     {
         var currency = "eur";
-        var successUrl = "http://localhost:5069/Cart";
-        var cancelUrl = "http://localhost:5069/Cart";
+        var successUrl = "http://localhost:5069/Cart/Success";
+        var cancelUrl = "http://localhost:5069/Cart/Cancel";
 
         StripeConfiguration.ApiKey = _stripeSettings.SecretKey;
         var options = new SessionCreateOptions

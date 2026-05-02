@@ -127,12 +127,15 @@
         let response = await fetch(finalUrl);
         let percentage = await response.json();
         let cartPrice = document.getElementById('cartPrice');
+        const form = document.querySelector('form#submit');
+        let valuePrice = cartPrice.textContent;
         let pizzaPrices = document.querySelectorAll('#pizzaPrice');
         pizzaPrices.forEach((pizza) => {
             pizza.textContent = (pizza.textContent * (100 - percentage) / 100).toFixed(2);
         })
+        const newUrl = `/Cart/CreateCheckoutSession?amount=${(cartPrice.textContent * (100 - percentage) / 100).toFixed(2)}`;
         cartPrice.textContent = (cartPrice.textContent * (100 - percentage) / 100).toFixed(2);
-
+        form.setAttribute('action', newUrl);
         if (response.status === 200) {
             buttonCoupon.removeEventListener('click', applyDiscount)
         }

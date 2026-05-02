@@ -14,6 +14,7 @@ builder.Services.AddDbContext<PizzaDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.Configure<GmailOptions>(builder.Configuration.GetSection(GmailOptions.SectionName));
+builder.Services.Configure<StripeOptions>(builder.Configuration.GetSection("StripeSettings"));
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddDefaultUI()
