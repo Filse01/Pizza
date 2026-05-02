@@ -44,24 +44,24 @@ public class CartController : Controller
         }
         return RedirectToAction(nameof(Index), "Menu");
     }
-    [HttpPost]
-    public async Task<IActionResult> AddOrder(AddOrderPageViewModel model)
-    {
-        var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-        var cart = await _cartService.GetCart(userId);
-        model.Cart = cart;
-        ModelState.Clear();
-        if (TryValidateModel(model) && userId != null)
-        {
-            bool result = await _cartService.CreateOrder(model, userId);
-            bool mailResult = await _cartService.CreateMail(userId);
-            if (result == true)
-            {
-                return RedirectToAction(nameof(Index));
-            }
-        }
-        return View("Index", model);
-    }
+    // [HttpPost]
+    // public async Task<IActionResult> AddOrder(AddOrderPageViewModel model)
+    // {
+    //     var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+    //     var cart = await _cartService.GetCart(userId);
+    //     model.Cart = cart;
+    //     ModelState.Clear();
+    //     if (TryValidateModel(model) && userId != null)
+    //     {
+    //         bool result = await _cartService.CreatePendingOrder(model, userId);
+    //         bool mailResult = await _cartService.CreateMail(userId);
+    //         if (result == true)
+    //         {
+    //             return RedirectToAction(nameof(Index));
+    //         }
+    //     }
+    //     return View("Index", model);
+    // }
 
     
     public async Task<IActionResult> RemoveFromCart(Guid cartItemId)
@@ -91,21 +91,38 @@ public class CartController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Success()
+    public async Task<IActionResult> Success(Guid id)
     {
-        return View();
+        // 1. Find the order by ID
+        // 2. Change status from "Pending" to "Paid"
+        await _cartService.MarkOrderAsPaid(id);
+    
+        // 3. Send the confirmation email ONLY now that it's paid
+        var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+        await _cartService.CreateMail(userId);
+
+        return View(); // Or a Thank You page
     }
     [HttpGet]
-    public async Task<IActionResult> Cancel()
+    public async Task<IActionResult> Cancel(Guid id)
     {
-        return View();
-    }
-    public IActionResult CreateCheckoutSession(string amount)
-    {
-        var currency = "eur";
-        var successUrl = "http://localhost:5069/Cart/Success";
-        var cancelUrl = "http://localhost:5069/Cart/Cancel";
+        // 1. Find the order by ID
+        // 2. Change status from "Pending" to "Cancelled" (or just delete it from the DB)
+        await _cartService.CancelOrder(id);
 
+        // 3. Send them back to their cart to try again
+        return RedirectToAction("Cancel"); 
+    }
+    public async Task<IActionResult> CreateCheckoutSession(string amount, AddOrderPageViewModel model)
+    {
+        var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var currency = "eur";
+        var cart = await _cartService.GetCart(userId);
+        model.Cart = cart;
+        ModelState.Clear();
+        Guid orderId = await _cartService.CreatePendingOrder(model, userId);
+        var successUrl = Url.Action("Success", "Cart", new { id = orderId }, Request.Scheme);
+        var cancelUrl = Url.Action("Cancel", "Cart", new { id = orderId }, Request.Scheme);
         StripeConfiguration.ApiKey = _stripeSettings.SecretKey;
         var options = new SessionCreateOptions
         {
@@ -132,7 +149,8 @@ public class CartController : Controller
             },
             Mode = "payment",
             SuccessUrl = successUrl,
-            CancelUrl = cancelUrl
+            CancelUrl = cancelUrl,
+            ClientReferenceId = orderId.ToString()
 
         };
         var service = new SessionService();

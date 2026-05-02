@@ -100,7 +100,7 @@ public class CartService : ICartService
         return null;
     }
 
-    public async Task<bool> CreateOrder(AddOrderPageViewModel model, string userId)
+    public async Task<Guid> CreatePendingOrder(AddOrderPageViewModel model, string userId)
     {
         if (model != null)
         {
@@ -112,7 +112,8 @@ public class CartService : ICartService
                 UserId = userId,
                 PhoneNumber = model.Order.PhoneNumber,
                 OrderDate = DateTime.Now,
-                Address = model.Order.Address
+                Address = model.Order.Address,
+                OrderStatus = "Pending"
             };
             List<OrderItem> orderItems = new List<OrderItem>();
             foreach (var cartItem in model.Cart.CartItems)
@@ -144,9 +145,9 @@ public class CartService : ICartService
             await context.SaveChangesAsync();
             context.RemoveRange(model.Cart.CartItems);
             await context.SaveChangesAsync();
-            return true;
+            return order.Id;
         }
-        return false;
+        return Guid.Empty;
     }
 
     public async Task<bool> CreateMail(string userId)
@@ -204,5 +205,34 @@ public class CartService : ICartService
             }
         }
         return null;
+    }
+
+    public async Task<bool> MarkOrderAsPaid(Guid orderId)
+    {
+        var order = await context.Orders.Where(o => o.Id == orderId).FirstOrDefaultAsync();
+        if (order != null)
+        {
+            order.OrderStatus = "Paid";
+            context.Update(order);
+            await context.SaveChangesAsync();
+            return true;
+        }
+        return false;
+    }
+
+    public async Task<bool> CancelOrder(Guid orderId)
+    {
+        var order = await context
+            .Orders
+            .Where(o => o.Id == orderId)
+            .FirstOrDefaultAsync();
+        if (order != null)
+        {
+            order.OrderStatus = "Canceled";
+            context.Update(order);
+            await context.SaveChangesAsync();
+            return true;
+        }
+        return false;
     }
 }

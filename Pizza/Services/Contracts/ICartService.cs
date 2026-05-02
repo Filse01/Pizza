@@ -7,7 +7,9 @@ public interface ICartService
     Task<bool> AddToCart(string userId, Guid pizzaId);
     Task<bool> RemoveFromCart(string userId, Guid pizzaId);
     Task<CartViewModel> GetCart(string userId);
-    Task<bool> CreateOrder(AddOrderPageViewModel order, string userId);
+    Task<Guid> CreatePendingOrder(AddOrderPageViewModel order, string userId);
     Task<bool> CreateMail(string userId);
-    Task<CouponViewModel> ApplyCouponFrontend(string couponName);
+    Task<CouponViewModel> ApplyCouponFrontend(string couponName); 
+    Task<bool> MarkOrderAsPaid(Guid orderId);
+    Task<bool> CancelOrder(Guid orderId);
 }

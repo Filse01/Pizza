@@ -14,4 +14,6 @@ public class Order
     public string LastName { get; set; } = null!;
     public string Address { get; set; }
     public string PhoneNumber { get; set; }
+    
+    public string OrderStatus { get; set; }
 }

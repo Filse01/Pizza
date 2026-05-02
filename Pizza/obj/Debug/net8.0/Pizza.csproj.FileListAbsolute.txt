@@ -257,7 +257,6 @@
 /home/filse/Documents/Pizza/Pizza/obj/Debug/net8.0/scopedcss/Views/Shared/_Layout.cshtml.rz.scp.css
 /home/filse/Documents/Pizza/Pizza/obj/Debug/net8.0/scopedcss/bundle/Pizza.styles.css
 /home/filse/Documents/Pizza/Pizza/obj/Debug/net8.0/scopedcss/projectbundle/Pizza.bundle.scp.css
-/home/filse/Documents/Pizza/Pizza/obj/Debug/net8.0/Pizza.csproj.Up2Date
 /home/filse/Documents/Pizza/Pizza/obj/Debug/net8.0/Pizza.dll
 /home/filse/Documents/Pizza/Pizza/obj/Debug/net8.0/refint/Pizza.dll
 /home/filse/Documents/Pizza/Pizza/obj/Debug/net8.0/Pizza.pdb
@@ -269,3 +268,4 @@
 /home/filse/Documents/Pizza/Pizza/bin/Debug/net8.0/Stripe.net.dll
 /home/filse/Documents/Pizza/Pizza/bin/Debug/net8.0/System.Security.Cryptography.Pkcs.dll
 /home/filse/Documents/Pizza/Pizza/bin/Debug/net8.0/runtimes/win/lib/net8.0/System.Security.Cryptography.Pkcs.dll
+/home/filse/Documents/Pizza/Pizza/obj/Debug/net8.0/Pizza.csproj.Up2Date
