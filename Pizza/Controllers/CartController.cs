@@ -113,14 +113,28 @@ public class CartController : Controller
         // 3. Send them back to their cart to try again
         return RedirectToAction("Cancel"); 
     }
-    public async Task<IActionResult> CreateCheckoutSession(string amount, AddOrderPageViewModel model)
+    public async Task<IActionResult> CreateCheckoutSession(AddOrderPageViewModel model)
     {
         var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
         var currency = "eur";
         var cart = await _cartService.GetCart(userId);
         model.Cart = cart;
         ModelState.Clear();
+        var finalPrice = cart.Price;
+        
+        if (!string.IsNullOrEmpty(model.Coupon?.Name))
+        { 
+            var couponResult = await _cartService.ApplyCouponFrontend(model.Coupon.Name);
+            if (couponResult != null && couponResult.Percentage != null)
+            {
+                // Apply discount securely
+                finalPrice = finalPrice * (100 - couponResult.Percentage.Value) / 100m;
+            }
+        }
+
+        cart.Price = finalPrice;
         Guid orderId = await _cartService.CreatePendingOrder(model, userId);
+        
         var successUrl = Url.Action("Success", "Cart", new { id = orderId }, Request.Scheme);
         var cancelUrl = Url.Action("Cancel", "Cart", new { id = orderId }, Request.Scheme);
         StripeConfiguration.ApiKey = _stripeSettings.SecretKey;
@@ -137,7 +151,7 @@ public class CartController : Controller
                     PriceData = new SessionLineItemPriceDataOptions()
                     {
                         Currency = currency,
-                        UnitAmountDecimal = Convert.ToDecimal(amount) * 100,
+                        UnitAmountDecimal = Math.Round(finalPrice * 100),
                         ProductData = new SessionLineItemPriceDataProductDataOptions
                         {
                             Name = "Pizza",

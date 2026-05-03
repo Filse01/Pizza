@@ -54,7 +54,7 @@
             <div class="card bg-dark-card border-0 shadow-lg p-4">
                 <h4 class="mb-4 text-white">Billing Address</h4>
                 
-                <form id="submit" asp-controller="Cart" asp-action="CreateCheckoutSession" asp-route-amount="@Model.Cart.Price" class="needs-validation" novalidate method="post">
+                <form id="submit" asp-controller="Cart" asp-action="CreateCheckoutSession" class="needs-validation" novalidate method="post">
                     
                     <div class="row g-3">
                         <div class="col-sm-6">
@@ -127,15 +127,11 @@
         let response = await fetch(finalUrl);
         let percentage = await response.json();
         let cartPrice = document.getElementById('cartPrice');
-        const form = document.querySelector('form#submit');
-        let valuePrice = cartPrice.textContent;
         let pizzaPrices = document.querySelectorAll('#pizzaPrice');
         pizzaPrices.forEach((pizza) => {
             pizza.textContent = (pizza.textContent * (100 - percentage) / 100).toFixed(2);
         })
-        const newUrl = `/Cart/CreateCheckoutSession?amount=${(cartPrice.textContent * (100 - percentage) / 100).toFixed(2)}`;
         cartPrice.textContent = (cartPrice.textContent * (100 - percentage) / 100).toFixed(2);
-        form.setAttribute('action', newUrl);
         if (response.status === 200) {
             buttonCoupon.removeEventListener('click', applyDiscount)
         }
