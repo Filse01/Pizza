@@ -65,7 +65,8 @@ public class AdminService : IAdminService
                 OrderDate = o.OrderDate,
                 OrderItems = o.Pizzas,
                 Price = o.Pizzas.Where(p => p.OrderId == o.Id).Sum(p => p.UnitPrice),
-                PhoneNumber = o.PhoneNumber
+                PhoneNumber = o.PhoneNumber,
+                OrderStatus = o.OrderStatus
             })
             .ToListAsync();
         return orders;

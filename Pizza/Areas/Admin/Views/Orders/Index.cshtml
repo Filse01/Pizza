@@ -112,6 +112,8 @@
                     <th scope="col" style="width: 16.6%;">Phone Number</th>
                     <th scope="col" style="width: 16.6%;">Person Name</th>
                     <th scope="col" style="width: 16.6%;">Price</th>
+                    <th scope="col" style="width: 16.6%;">Order Status</th>
+
                 </tr>
                 </thead>
                 <tbody>
@@ -150,6 +152,9 @@
 
                         <td>
                             <span class="price-tag">$@order.Price.ToString("F2")</span>
+                        </td>
+                        <td>
+                            @order.OrderStatus
                         </td>
                     </tr>
                 }
