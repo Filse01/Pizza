@@ -31,4 +31,19 @@ public class EditIngredientsController : Controller
         bool result = await _adminService.DeleteIngredient(id);
         return result ? RedirectToAction("Index") : View();
     }
+
+    public async Task<IActionResult> AddIngredient()
+    {
+        return View();
+    }
+    [HttpPost]
+    public async Task<IActionResult> AddIngredient(AddIngredientToMenu model)
+    {
+        if (ModelState.IsValid)
+        {
+            bool result = await _adminService.AddIngredientToMenu(model);
+            return RedirectToAction("Index");
+        }
+        return View(model);
+    }
 }

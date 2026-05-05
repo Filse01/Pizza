@@ -1,7 +1,10 @@
 @using EditIngredientsViewModel = Pizza.ViewModels.EditIngredientsViewModel
 @model EditIngredientsViewModel
 <div class="container justify-content-center align-self-center mt-5">
+    <div class="container d-flex justify-content-between">
     <a asp-controller="Home" asp-action="Index" class="btn btn-dark p-2 mb-1">← Back</a>
+    <a asp-controller="EditIngredients" asp-action="AddIngredient" class="btn btn-dark p-2 mb-1">Add new ingredient</a>
+    </div>
     <table class="table table-striped table-hover">
         <thead>
         <tr>

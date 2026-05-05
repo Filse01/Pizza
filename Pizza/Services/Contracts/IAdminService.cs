@@ -16,6 +16,6 @@ public interface IAdminService
     Task<bool> DeletePizza(Guid? id);
     Task<bool> DeleteIngredient(Guid? id);
     Task<bool> CreatePizza(EditPageViewModel model);
-    
+    Task<bool> AddIngredientToMenu(AddIngredientToMenu model);
 
 }

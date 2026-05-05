@@ -1,0 +1,154 @@
+@using AddIngredientToMenu = Pizza.ViewModels.AddIngredientToMenu
+@model AddIngredientToMenu
+
+<style>
+    /* Custom Styles for Polish */
+    
+    /* 1. Smooth Card */
+    .pizza-card {
+        border: none;
+        border-radius: 1rem;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        overflow: hidden;
+    }
+    
+    .card-header-custom {
+        background: linear-gradient(45deg, #ff6b6b, #ee5253);
+        color: white;
+        padding: 1.5rem;
+    }
+
+    /* 2. Autocomplete Dropdown Styling */
+    .search-container {
+        position: relative;
+    }
+
+    .result-box {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        background: white;
+        border-radius: 0 0 0.5rem 0.5rem;
+        box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+        max-height: 200px;
+        overflow-y: auto;
+        display: none; /* Hidden by default */
+    }
+
+    .result-box ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        border: 1px solid #dee2e6;
+        border-top: none;
+    }
+
+    .result-box li {
+        padding: 10px 15px;
+        cursor: pointer;
+        transition: background 0.2s;
+        border-bottom: 1px solid #f1f1f1;
+    }
+
+    .result-box li:hover {
+        background-color: #f8f9fa;
+        color: #ee5253;
+        font-weight: 600;
+    }
+
+    /* 3. Ingredient Chips with Delete Animation */
+    .ingredients-box {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        min-height: 50px;
+        padding: 10px;
+        background-color: #f8f9fa;
+        border-radius: 0.5rem;
+        border: 1px dashed #dee2e6;
+    }
+
+    .ingredient-chip {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.5rem 1rem;
+        background-color: #e9ecef;
+        color: #495057;
+        border-radius: 50rem; /* Pill shape */
+        font-weight: 500;
+        cursor: pointer;
+        user-select: none;
+        transition: all 0.3s ease;
+        overflow: hidden;
+        border: 1px solid transparent;
+    }
+
+    /* Text inside the chip */
+    .ingredient-chip span {
+        transition: opacity 0.2s ease;
+    }
+
+    /* The Hidden X Icon */
+    .ingredient-chip .delete-icon {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0.5);
+        opacity: 0;
+        color: white;
+        transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    /* Hover State: Turn Red, Hide Text, Show X */
+    .ingredient-chip:hover {
+        background-color: #dc3545; /* Bootstrap Danger */
+        box-shadow: 0 4px 6px rgba(220, 53, 69, 0.3);
+        padding-right: 1rem; /* Maintain shape */
+    }
+
+    .ingredient-chip:hover span {
+        opacity: 0; /* Fade out text */
+    }
+
+    .ingredient-chip:hover .delete-icon {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.2); /* Pop in */
+    }
+</style>
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <form asp-controller="EditIngredients" asp-action="AddIngredient">
+                <div class="card pizza-card">
+                    <div class="card-header-custom">
+                        <h3 class="mb-0"><i class="fas fa-carrot me-2"></i>Create Ingredient</h3>
+                    </div>
+
+                    <div class="card-body p-4">
+                        <h5 class="text-muted mb-3">Basic Information</h5>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input asp-for="Name"  class="form-control" placeholder="Ingredient Name"/>
+                                    <label asp-for="Name">Ingredient Name</label>
+                                    <span asp-validation-for="Name" class="text-danger"></span>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-footer bg-white p-4 text-end">
+                        <a href="javascript:history.back()" class="btn btn-light me-2">Cancel</a>
+                        <button type="submit" class="btn btn-success px-4">Add</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

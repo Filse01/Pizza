@@ -212,4 +212,21 @@ public class AdminService : IAdminService
         }
         return false;
     }
+
+    public async Task<bool> AddIngredientToMenu(AddIngredientToMenu model)
+    {
+        if (model != null)
+        {
+            var ingredient = new Ingredient()
+            {
+                Id = Guid.NewGuid(),
+                Name = model.Name
+            };
+            await context.AddAsync(ingredient);
+            await context.SaveChangesAsync();
+            return true;
+        }
+
+        return false;
+    }
 }
